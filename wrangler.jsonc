@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "sfts-backend",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-03",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "hyperdrive": [
+    {
+      "binding": "HYPERDRIVE",
+      "id": "REPLACE_WITH_CLOUDFLARE_HYPERDRIVE_ID"
+    }
+  ],
+  "secrets": {
+    "required": ["JWT_SECRET"]
+  },
+  "vars": {
+    "NODE_ENV": "production",
+    "JWT_EXPIRES_IN": "7d",
+    "DEV_RESET_ENABLED": "false",
+    "CORS_ORIGINS": ""
+  },
+  "alias": {
+    "express": "./src/worker-express.js"
+  }
+}

@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { getConfig } = require('../config');
 
 // REQ-3: Authenticate via email and password -> issues JWT; this middleware verifies it
 function requireAuth(req, res, next) {
@@ -10,7 +11,7 @@ function requireAuth(req, res, next) {
   }
 
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    const payload = jwt.verify(token, getConfig('JWT_SECRET'));
     req.user = payload; // { id, email, role }
     next();
   } catch (err) {

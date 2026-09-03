@@ -3,14 +3,15 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const pool = require('../db');
 const { calculateBMI, calculateMaintenanceCalories } = require('../utils/calculations');
+const { getConfig } = require('../config');
 
 const router = express.Router();
 
 function signToken(user) {
   return jwt.sign(
     { id: user.id, email: user.email, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+    getConfig('JWT_SECRET'),
+    { expiresIn: getConfig('JWT_EXPIRES_IN') || '7d' }
   );
 }
 
@@ -98,7 +99,7 @@ router.post('/dev-reset-password', async (req, res) => {
   const requestPath = req.originalUrl;
   console.log(`DEV RESET REQUEST: ${req.method} ${requestPath}`);
 
-  if (process.env.DEV_RESET_ENABLED !== 'true') {
+  if (getConfig('DEV_RESET_ENABLED') !== 'true') {
     console.log('DEV RESET RESULT: 403');
     return res.status(403).json({ error: 'Developer reset is disabled' });
   }

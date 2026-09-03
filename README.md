@@ -65,3 +65,15 @@ All protected routes need header: `Authorization: Bearer <token>` (token from lo
 
 Render supplies `PORT`; the service still binds to `0.0.0.0`. Do not put database credentials or JWT secrets in `render.yaml`.
 
+## 5. Cloudflare Workers deployment
+
+The Worker entrypoint is `src/index.js`. It preserves the existing Express route modules through a Workers fetch adapter and uses Cloudflare Hyperdrive for PostgreSQL. The Wrangler configuration is `wrangler.jsonc`.
+
+1. Authenticate Wrangler: `npx wrangler login`.
+2. Create a Hyperdrive configuration from the existing PostgreSQL connection string, entered directly into the terminal: `npx wrangler hyperdrive create sfts-postgres --connection-string="..."`.
+3. Replace only `REPLACE_WITH_CLOUDFLARE_HYPERDRIVE_ID` in `wrangler.jsonc` with the returned Hyperdrive ID.
+4. Set the Worker secret directly, without putting it in a file: `npx wrangler secret put JWT_SECRET`.
+5. Deploy with `npx wrangler deploy`.
+
+Set `CORS_ORIGINS` only for browser origins that need access. Native Android requests do not send an Origin header. Keep `DEV_RESET_ENABLED` set to `false` in production. Cloudflare will provide the public HTTPS `workers.dev` URL after deployment.
+
