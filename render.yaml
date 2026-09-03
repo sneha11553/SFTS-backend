@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: sfts-backend
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: DEV_RESET_ENABLED
+        value: false
+      - key: CORS_ORIGINS
+        sync: false

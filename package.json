@@ -1,0 +1,26 @@
+{
+  "name": "sfts-backend",
+  "version": "1.0.0",
+  "description": "Smart Fitness Tracking System - REST API backend (Node.js/Express/PostgreSQL)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "service:start": "./scripts/sfts-backend-service.sh start",
+    "service:stop": "./scripts/sfts-backend-service.sh stop",
+    "service:restart": "./scripts/sfts-backend-service.sh restart",
+    "service:status": "./scripts/sfts-backend-service.sh status",
+    "service:logs": "./scripts/sfts-backend-service.sh logs"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.12.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
