@@ -1,4 +1,5 @@
 const app = require('./app');
+const { Client } = require('pg');
 const { getConfig, runWithEnvironment } = require('./config');
 
 function validateProductionEnvironment() {
@@ -11,7 +12,13 @@ export default {
   fetch(request, environment) {
     return runWithEnvironment(environment, async () => {
       validateProductionEnvironment();
-      return app.fetch(request, environment);
+      const client = new Client({ connectionString: environment.HYPERDRIVE.connectionString });
+      await client.connect();
+      try {
+        return await runWithEnvironment({ ...environment, __DB_CLIENT: client }, () => app.fetch(request, environment));
+      } finally {
+        await client.end();
+      }
     });
   }
 };
